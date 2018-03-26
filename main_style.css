@@ -1,25 +1,46 @@
 @font-face {
-
-    font-family: 'OpenSans-light';
-    src: url('fonts/OpenSans-Light.ttf');
-}
-
-@font-face {
-
-    font-family: 'OpenSans-regular';
-    src: url('fonts/OpenSans-Regular.ttf');
+    font-family: 'MADEEvolveSansMedium';
+    src: url('fonts/MADEEvolveSansMedium.ttf');
 }
 
 
 @font-face {
-
-    font-family: 'OpenSans-semibold';
-    src: url('fonts/OpenSans-SemiBold.ttf');
+    font-family: 'RealWorld';
+    src: url('fonts/RealWorld.ttf');
 }
 
-body {
-  font-family: 'OpenSans-regular';
+@font-face {
+    font-family: 'Comfortaa-Bold';
+    src: url('fonts/Comfortaa-Bold.ttf');
 }
+
+@font-face {
+    font-family: 'Comfortaa-Regular';
+    src: url('fonts/Comfortaa-Regular.ttf');
+}
+
+p, body {
+  font-family: 'MADEEvolveSansMedium';
+  font-size: 12px;
+}
+
+h1 {
+  font-family: 'Comfortaa-Bold';
+  font-size: 2em;
+}
+
+h2 {
+  font-family: 'Comfortaa-Bold';
+  font-size: 18px;
+  color: #FF7036;
+}
+
+h3 {
+  font-family: 'Comfortaa-Regular';
+  font-size: 14px;
+  color: #E88426;
+}
+
 
 /* main-page */
 #left-menu {
@@ -29,6 +50,7 @@ body {
   width: 16%;
   height: 76%;
   padding: 2%;
+  text-align: right;
 }
 
 #main-content{
@@ -52,6 +74,7 @@ body {
   margin: 0%;
   padding: 0%;
   display: inline-block;
+  background-color: #E83726;
 }
 
 #top-bar_wl {
@@ -108,4 +131,12 @@ body {
 
 #only-content > a {
   font-size: 80%;
+}
+
+.menu_on {
+  color: #FF7036;
+}
+
+.menu_off {
+  color: #E83726;
 }

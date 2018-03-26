@@ -1,0 +1,111 @@
+@font-face {
+
+    font-family: 'OpenSans-light';
+    src: url('fonts/OpenSans-Light.ttf');
+}
+
+@font-face {
+
+    font-family: 'OpenSans-regular';
+    src: url('fonts/OpenSans-Regular.ttf');
+}
+
+
+@font-face {
+
+    font-family: 'OpenSans-semibold';
+    src: url('fonts/OpenSans-SemiBold.ttf');
+}
+
+body {
+  font-family: 'OpenSans-regular';
+}
+
+/* main-page */
+#left-menu {
+  position: absolute;
+  top: 15%;
+  left: 0%;
+  width: 16%;
+  height: 76%;
+  padding: 2%;
+}
+
+#main-content{
+  position: absolute;
+  width: 71%;
+  height: 71%;
+  top: 15%;
+  left: 20%;
+  padding: 2%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+}
+
+#top-bar{
+  position: absolute;
+  width: 100%;
+  height: 15%;
+  top: 0%;
+  left: 0%;
+  margin: 0%;
+  padding: 0%;
+  display: inline-block;
+}
+
+#top-bar_wl {
+  position: relative;
+  height: 100%;
+  width: 25%;
+  float: left;
+  text-align: left;
+}
+
+#top-bar_wc {
+  position: relative;
+  height: 100%;
+  width: 50%;
+  float: left;
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  font-family: 'OpenSans-light';
+  font-size: 200%;
+}
+
+#top-bar_wr {
+  position: relative;
+  height: 100%;
+  width: 25%;
+  float: left;
+  text-align: left;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+/* connection page */
+#only-content{
+  height: 100%;
+  width: 20%;
+  padding: 5%;
+  position: relative;
+  text-align: center;
+  margin: auto;
+  margin-top: 7%;
+}
+
+#only-content > img {
+  height: 50%;
+  width: 50%;
+}
+
+#only-content > input {
+  display: block;
+  height: 50%;
+  margin: 1% auto;
+}
+
+#only-content > a {
+  font-size: 80%;
+}

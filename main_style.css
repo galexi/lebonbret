@@ -56,7 +56,7 @@ h3 {
 #main-content{
   position: absolute;
   width: 71%;
-  height: 71%;
+  height: auto;
   top: 15%;
   left: 20%;
   padding: 2%;
@@ -139,4 +139,27 @@ h3 {
 
 .menu_off {
   color: #E83726;
+}
+
+/* competence page !! */
+.brick {
+  background: cornsilk;
+  border-width: 2px;
+  border-style: solid;
+  margin-bottom: 2%;
+  border-color: bisque;
+  border-radius: 15px;
+  padding: 1%;
+  position: relative;
+}
+
+.brick > img {
+  position: absolute;
+  height: 80%;
+  width: auto;
+}
+
+.brick > h1, h2, p {
+    position: relative;
+    left: 10%;
 }

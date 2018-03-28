@@ -37,7 +37,7 @@ class Lebonskill extends WebSocket{
                 break;
 
             case "meteo":
-
+                $this->bulletinMeteo($parsed_msg[1],$parsed_msg[2],$parsed_msg[3],$parsed_msg[4]);
                 break;
 
             default:
@@ -227,6 +227,28 @@ class Lebonskill extends WebSocket{
         }
 
         return $id_conv;
+    }
+
+    public function bulletinMeteo($user_id,$ville,$date,$heure){
+        $date_time = $date." ".$heure;
+        $date_time = strtotime($date_time);
+        echo "> Date et heure : ".$date_time;
+
+        $url = "http://api.openweathermap.org/data/2.5/forecast?q=".$ville."&units=metric&appid=db96ce1733068de372e8f900d5fa1f4d";
+        $json = file_get_contents($url);
+        $decode = json_decode($json, true);
+
+        for($i = 0; $i < count($decode['list']);$i++){
+            $date_bulletin = strtotime($decode['list'][$i]['dt_txt']);
+            if($date_time < $date_bulletin){
+                $j = $i-1;
+                $i=count($decode['list']);
+            }
+        }
+
+        $to_send = "meteo#!".$decode['list'][$j]['weather'][0]['main']."#!".strstr($decode['list'][$j]['main']['temp'],'.',true)."#!".strstr($decode['list'][$j]['wind']['speed'],'.',true)."#!".date("d-m-Y",strtotime($date));
+        echo "> A envoyer : ".$to_send;
+        $this->send($this->connected_users[$user_id], $to_send);
     }
 
     public function parse_msg($msg){

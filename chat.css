@@ -1,0 +1,17 @@
+form{
+
+}
+
+.wrap-input{
+
+}
+
+#chatbox{
+  height: 350px;
+  overflow-y: scroll;
+}
+
+#rdv{
+    margin-top: 30px;
+    padding-bottom: 10px;
+}

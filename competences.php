@@ -1,10 +1,7 @@
 <?php
 include 'data/vars.php';
 session_start();
-  if (isset($_SESSION["id_u"]) ) {
-    header('location: competences.php');
-  }
-  else {
+  if (!isset($_SESSION["id_u"]) ) {
     header('location: connection.php');
   }
 ?>

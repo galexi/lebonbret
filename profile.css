@@ -1,0 +1,23 @@
+.round-image{
+  display: inline-block;
+  overflow:hidden;    /*Permet de masquer la partie découpée de l'image*/
+  border-radius:100px;
+  width:150px;
+  height:150px;
+  box-shadow: 0px 0px 10px #343434;
+  float: left;
+}
+
+#profilpic{
+  max-width: 150px;
+  height:150px;
+}
+
+#id-card{
+  padding-top: 20px;
+  margin-left: 200px;
+}
+
+#competence{
+  padding-top: 40px;
+}

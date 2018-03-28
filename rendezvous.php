@@ -17,16 +17,16 @@
     ?>
     <body>
       <div id="top-bar">
-        <div id="top-bar_wl">
-          <a href="competences.php" ><img style="height: 70%; width: auto; margin: 5%;" src="img/logo.png"/></a>
-        </div>
-        <div id="top-bar_wc">
-          <h1>lebonskill.fr</h1>
-        </div>
-        <div id="top-bar_wr">
-          <input style="float: left; height: 30%; width: 70%;" type="text" placeholder="Recherche">
-          <img style="height: 30%; width: auto; float: left; margin: 1%;" src="img/search_img.png"/>
-        </div>
+          <div id="top-bar_wl">
+            <a href="competences.php" ><img src="img/logo.png"/></a>
+          </div>
+          <div id="top-bar_wc">
+              <h1>lebonskill.fr</h1>
+          </div>
+          <div id="top-bar_wr">
+              <p>Bienvenue <?php $current_user_firstname = "Géraldine";
+              echo $current_user_firstname; ?> !</p>
+          </div>
       </div>
       <div id="left-menu">
         <h2 class="menu_off">Mon profil</h2>
@@ -41,7 +41,7 @@
           $id_current = 1;
 
           //$reponse = $bdd->query('SELECT * FROM rdv r, utilisateur u, prendre p where p.id_u = u.id_u and p.id_r = r.id_r and p.id_u = ' . $id_current);
-          $reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
+          $reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
 
           while($donnees = $reponse->fetch()){
             /* la classe brick désigne les éléments prenant toutes la largueur de l'élément parent. */

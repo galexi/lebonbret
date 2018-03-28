@@ -41,6 +41,9 @@ h3 {
   color: #E88426;
 }
 
+a {
+  text-decoration: none;
+}
 
 /* main-page */
 #left-menu {
@@ -60,7 +63,7 @@ h3 {
   top: 15%;
   left: 20%;
   padding: 2%;
-  border-style: solid;
+  border-style: none;
   border-width: 2px;
   border-radius: 10px;
 }
@@ -162,4 +165,31 @@ h3 {
 .brick > h1, h2, p {
     position: relative;
     left: 10%;
+}
+
+/* rendez-vous page !! */
+.tile {
+  position: relative;
+  float: left;
+  width: 30%;
+  height: auto;
+  background-color: lavenderblush;
+  margin: 1%;
+  border-width: thin;
+  border-style: solid;
+  border-color: antiquewhite;
+}
+
+.tile > img {
+  position: absolute;
+  height: 30%;
+  width: auto;
+  right: 0%;
+  bottom: 0%;
+}
+
+.tile > h1 {
+  position: relative;
+  text-align: center;
+  color: burlywood;
 }

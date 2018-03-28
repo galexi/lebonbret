@@ -52,7 +52,7 @@ else
                 <h1>lebonskill.fr</h1>
             </div>
             <div id="top-bar_wr">
-                <p>Bienvenue <?php echo $current_user_firstname; ?> !</p>
+              <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
             </div>
         </div>
 

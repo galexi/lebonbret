@@ -42,5 +42,5 @@ $req_prep = mysqli_prepare($bdd, "INSERT INTO prendre (id_u, id_r) VALUES ('". $
 //mysqli_stmt_bind_param($req_prep, "ss", $identifiant, $password);
 mysqli_stmt_execute($req_prep);
 
-header('location: rendezvous.php');
+header('location: chat.php?id='. id_u .'&o='. id_u2);
 ?>

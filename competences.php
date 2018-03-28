@@ -26,21 +26,20 @@ session_start();
     <body>
       <div id="top-bar">
           <div id="top-bar_wl">
-          <img src="img/logo.png"/>
+          <a href="competences.php" ><img src="img/logo.png"/></a>
           </div>
           <div id="top-bar_wc">
               <h1>lebonskill.fr</h1>
           </div>
           <div id="top-bar_wr">
-              <p>Bienvenue <?php $current_user_firstname = "Géraldine";
-              echo $current_user_firstname; ?> !</p>
+            <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
           </div>
       </div>
       <div id="left-menu">
-        <h2 class="menu_off">Mon profil</h2>
+        <a href="profile.php"><h2 class="menu_off">Mon profil</h2></a>
         <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
         <h2 class="menu_off">Messagerie</h2>
-        <h2 class="menu_off">Déconnexion</h2>
+        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
       </div>
       <div id="main-content">
         <!-- barre de filtres -->
@@ -79,7 +78,7 @@ session_start();
 
         <?php
           //fake id for current user
-          $id_current = 2;
+          $id_current = $_SESSION["id_u"];
 
           /* <!> Ajouter le lien sur le nom des utilisateurs */
           /* Ajouter bouton chat, passer en paramètre GET l'id de l'utilisateur courant et l'id sur la personne ciblée */

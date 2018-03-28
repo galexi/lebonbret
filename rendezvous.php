@@ -7,6 +7,8 @@
     </head>
     <?php
       include 'data/vars.php';
+      session_start();
+
       /* tentative d'accès à la BDD */
       try{
         $bdd = new PDO('mysql:host='. DB_SERVER .';dbname='. DB_NAME .';charset=utf8', DB_USER, PW_USER);
@@ -25,21 +27,20 @@
               <h1>lebonskill.fr</h1>
           </div>
           <div id="top-bar_wr">
-              <p>Bienvenue <?php $current_user_firstname = "Géraldine";
-              echo $current_user_firstname; ?> !</p>
+            <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
           </div>
       </div>
       <div id="left-menu">
-        <h2 class="menu_off">Mon profil</h2>
-        <h2 class="menu_on">RDV à venir</h2>
+        <a href="profile.php"><h2 class="menu_off">Mon profil</h2></a>
+        <a href="rendezvous.php"><h2 class="menu_on">RDV à venir</h2></a>
         <h2 class="menu_off">Messagerie</h2>
-        <h2 class="menu_off">Déconnexion</h2>
+        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
       </div>
       <div id="main-content">
         <?php
           /* display des rendez-vous par tuiles contenant le titre du rdv, le lieu, la date et la personne qui est présente */
           /* avec fake utilisateur courant */
-          $id_current = 1;
+          $id_current = $_SESSION["id_u"];
 
           //$reponse = $bdd->query('SELECT * FROM rdv r, utilisateur u, prendre p where p.id_u = u.id_u and p.id_r = r.id_r and p.id_u = ' . $id_current);
           $reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');

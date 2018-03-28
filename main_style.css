@@ -159,13 +159,54 @@ a {
 
 .brick > img {
   position: absolute;
-  height: 80%;
+  height: 60%;
   width: auto;
+  bottom: 0;
+  left: 5px;
 }
 
-.brick > h1, h2, p {
+.brick > h2, h3, p {
     position: relative;
     left: 10%;
+}
+
+.brick > button {
+  position: relative;
+  background-color: #E83726;
+  font-family: 'Comfortaa-Bold';
+  font-size: 20px;
+  border-style: none;
+  border-radius: 12px;
+  color: azure;
+  left: 150px;
+  top: 100px;
+  margin-left: 50px;
+}
+
+.brick > .underbrick {
+  width: 200px;
+  height: 100px;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+}
+
+.underbrick > select, input {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.underbrick > h2 {
+    position: relative;
+    top: 5px;
+    left: 20px;
+}
+
+.underbrick > h3 {
+  position: absolute;
+  top: 9px;
+  right: 20px;
+  left: auto;
 }
 
 /* rendez-vous page !! */

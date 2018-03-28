@@ -17,16 +17,16 @@
     ?>
     <body>
       <div id="top-bar">
-        <div id="top-bar_wl">
-          <a href="competences.php" ><img style="height: 70%; width: auto; margin: 5%;" src="img/logo.png"/></a>
-        </div>
-        <div id="top-bar_wc">
-          <h1>lebonskill.fr</h1>
-        </div>
-        <div id="top-bar_wr">
-          <input style="float: left; height: 30%; width: 70%;" type="text" placeholder="Recherche">
-          <img style="height: 30%; width: auto; float: left; margin: 1%;" src="img/search_img.png"/>
-        </div>
+          <div id="top-bar_wl">
+            <a href="competences.php" ><img src="img/logo.png"/></a>
+          </div>
+          <div id="top-bar_wc">
+              <h1>lebonskill.fr</h1>
+          </div>
+          <div id="top-bar_wr">
+              <p>Bienvenue <?php $current_user_firstname = "Géraldine";
+              echo $current_user_firstname; ?> !</p>
+          </div>
       </div>
       <div id="left-menu">
         <h2 class="menu_off">Mon profil</h2>

@@ -167,20 +167,19 @@ a {
 
 .brick > h2, h3, p {
     position: relative;
-    left: 10%;
+    left: 150px;
 }
 
 .brick > button {
-  position: relative;
   background-color: #E83726;
   font-family: 'Comfortaa-Bold';
   font-size: 20px;
   border-style: none;
   border-radius: 12px;
   color: azure;
-  left: 150px;
-  top: 100px;
-  margin-left: 50px;
+  margin-top: 0px;
+  margin-left: 5px;
+  float: right;
 }
 
 .brick > .underbrick {
@@ -213,10 +212,10 @@ a {
 .tile {
   position: relative;
   float: left;
-  width: 30%;
+  width: 250px;
   height: auto;
   background-color: lavenderblush;
-  margin: 1%;
+  margin: 5px;
   border-width: thin;
   border-style: solid;
   border-color: antiquewhite;
@@ -224,7 +223,7 @@ a {
 
 .tile > img {
   position: absolute;
-  height: 30%;
+  height: 50px;
   width: auto;
   right: 0%;
   bottom: 0%;

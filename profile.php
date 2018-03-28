@@ -37,8 +37,10 @@ if(mysqli_stmt_bind_result($req_prep2, $comp['titre'], $comp['categorie'], $comp
 if(mysqli_stmt_store_result($req_prep2) == FALSE) {
   echo ("Erreur store result : " . mysqli_error($bdd));
 }
+//On compte le nombre de résultat retourné par la requete
 $nbresult = mysqli_stmt_num_rows($req_prep2);
 $i = 0;
+//Stockage des résultats dans un tableau
 while (mysqli_stmt_fetch($req_prep2)) {
   $titre[$i] = $comp['titre'];
   $categorie[$i] = $comp['categorie'];
@@ -76,10 +78,10 @@ $taille = $i;
         </div>
       </div>
       <div id="left-menu">
-        <h2 class="menu_on">TITRE 1</h2>
-        <h2 class="menu_off">TITRE 2</h2>
-        <h2 class="menu_off">TITRE 3</h2>
-        <h2 class="menu_off">TITRE 4</h2>
+        <a href="profile.php"><h2 class="menu_off">Mon profil</h2>
+        <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
+        <h2 class="menu_off">Messagerie</h2>
+        <h2 class="menu_off">Déconnexion</h2>
       </div>
       <div id="main-content">
         <div id="profile-header">
@@ -92,18 +94,20 @@ $taille = $i;
             ?>
             </p>
           </div>
-          <p style="text-align: center">
+          <div id="contacter">
             <?php
             if ($idconnected_user != $idprofile) {
-              echo "<input type=\"button\" value=\"Contacter\">";
+              echo '<button onclick="location.href = \'/chat.php?id=' . $idconnected_user . '&o=' . $idprofile . '\';">Contacter</button>';
             }
             ?>
-          </p>
+          </div>
         </div>
         <div id="competence">
           <p><?php
             for ($i=0; $i < $taille; $i++) {
-              echo "Titre : " . $titre[$i] . "</br> Catégorie : " . $categorie[$i] . "</br> Description : " . $description[$i] .  "</br> Disponibilité : " . $disp_d[$i] . " à " . $disp_t[$i] . "</br>";
+              echo '<div class="brick">';
+              echo "<h1>" . $titre[$i] . "</h1></br> Catégorie : " . $categorie[$i] . "</br> Description : " . $description[$i] .  "</br> Disponibilité : " . $disp_d[$i] . " à " . $disp_t[$i] . "</br>";
+              echo '</div>';
             }
           ?>
         </div>

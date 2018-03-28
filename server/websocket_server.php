@@ -1,5 +1,7 @@
 <?php
+include '../new/data/vars.php';
 require "websocket.class.php";
+
 
 class Lebonskill extends WebSocket{
 
@@ -16,9 +18,8 @@ class Lebonskill extends WebSocket{
                 //Inscrire le message en bdd
                 $this->nouveau_message($parsed_msg[1],$parsed_msg[2],substr($parsed_msg[3],0,1));
                 //Afficher le dernier message - chat content user_id conv_id
-                $this->lire_dernier_message($this->check_chat($parsed_msg[2],substr($parsed_msg[3],0,1)));
+                $this->lire_dernier_message($this->check_chat($parsed_msg[2],substr($parsed_msg[3],0,1)),$parsed_msg[2],substr($parsed_msg[3],0,1));
                 //// DEBUG:
-                print_r($this->connected_users);
                 break;
 
             case 'connect':
@@ -26,6 +27,7 @@ class Lebonskill extends WebSocket{
                 $this->say("> ".$parsed_msg[2]." est connecté.");
                 //$this->say("> Après parsing : ".$parsed_msg[0]." ".$parsed_msg[1]." ".$parsed_msg[2]." ".substr($parsed_msg[3],0,1));
                 $this->connected_users[$parsed_msg[1]] = $user->socket;
+                print_r($this->connected_users);
                 $res = $this->check_chat($parsed_msg[1],substr($parsed_msg[3],0,1));
                 if ($res != FALSE)
                 {
@@ -58,7 +60,7 @@ class Lebonskill extends WebSocket{
 
         $this->say("> Heure courante : ".$horodatage);
 
-        $bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector');
+        $bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME);
         $req = mysqli_prepare($bdd,'INSERT INTO message(horodatage,contenu,id_u,id_conv) VALUES(?,?,?,?)');
         if($req == FALSE)
         {
@@ -76,26 +78,33 @@ class Lebonskill extends WebSocket{
         }
     }
 
-    public function lire_dernier_message($id_conv){
+
+    public function lire_dernier_message($id_conv, $emet, $dest){
 
         $response = "";
 
         $this->say("> Lecture du dernier du message");
 
-        if($bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector'))
+        if($bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME))
         {
             $req = mysqli_prepare($bdd,'SELECT message.contenu, utilisateur.id_u FROM message, utilisateur WHERE utilisateur.id_u=message.id_u AND id_conv = ? ORDER BY message.horodatage DESC LIMIT 1');
             mysqli_stmt_bind_param($req,'i',$id_conv);
             mysqli_stmt_execute($req);
             mysqli_stmt_bind_result($req, $data['contenu'],$data['id_u']);
-            while(mysqli_stmt_fetch($req))
-            {
-                $response = "chat#!".$data['contenu']."#!".$data['id_u'];
-                foreach ($this->connected_users as $socket)
-                {
-                  $this->send($socket,$response);
-                }
+            mysqli_stmt_fetch($req);
+
+            $response = "chat#!".$data['contenu']."#!".$data['id_u'];
+
+            if(isset($this->connected_users[$emet])){
+                $this->send($this->connected_users[$emet], $response);
+                $this->say("(emett)Message envoyé à : ".$emet);
             }
+
+            if(isset($this->connected_users[$dest])){
+                $this->send($this->connected_users[$dest], $response);
+                $this->say("(Dest)Message envoyé à : ".$dest);
+            }
+
         }
         else
         {
@@ -104,15 +113,17 @@ class Lebonskill extends WebSocket{
         $this->say("> Dernier messages envoyés");
     }
 
+
+
     public function lire_tous_messages($id_conv,$id_user){
 
         $response = "";
 
         $this->say("> Lecture du dernier du message");
 
-        if($bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector'))
+        if($bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME))
         {
-            $bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector');
+            $bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME);
             $req = mysqli_prepare($bdd,'SELECT message.contenu, utilisateur.id_u FROM message, utilisateur WHERE utilisateur.id_u=message.id_u AND id_conv = ? ORDER BY message.horodatage ASC');
             mysqli_stmt_bind_param($req,'i',$id_conv);
             mysqli_stmt_execute($req);
@@ -138,9 +149,9 @@ class Lebonskill extends WebSocket{
 
         $this->say("> Envoi du welcome");
 
-        if($bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector'))
+        if($bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME))
         {
-            $bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector');
+            $bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME);
             $req = mysqli_prepare($bdd,'SELECT id_u FROM participer WHERE id_conv = ?');
             mysqli_stmt_bind_param($req,'i',$id_conv);
             mysqli_stmt_execute($req);
@@ -164,7 +175,7 @@ class Lebonskill extends WebSocket{
 
     public function check_chat($user_1, $user_2){
         //Connexion à la bdd
-        $bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector');
+        $bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME);
         //Vérification de l'existance éventuelle d'une conversation
         $req = mysqli_prepare($bdd,'SELECT t1.id_conv AS id_c FROM participer AS t1, participer AS t2 WHERE t1.id_conv = t2.id_conv AND t1.id_u = ? AND t2.id_u= ?');
         if(mysqli_stmt_bind_param($req,'ii',$user_1,$user_2) == FALSE)
@@ -198,7 +209,7 @@ class Lebonskill extends WebSocket{
 
         $id_conv = substr(md5($u1),0,12);
 
-        $bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector');
+        $bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME);
         $req = mysqli_prepare($bdd,'INSERT INTO participer(id_u,id_conv) VALUES (?,?),(?,?)');
         if($req == FALSE)
         {

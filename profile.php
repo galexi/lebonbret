@@ -1,4 +1,9 @@
 <?php
+session_start();
+  if (isset($_SESSION["id_u"]) == FALSE){
+    header('location: connection.php');
+  }
+
 //Connexion à la base MySQL
 if($bdd = mysqli_connect('localhost', 'said', 'stri', 'lebonskill'))
   {
@@ -8,7 +13,7 @@ if($bdd = mysqli_connect('localhost', 'said', 'stri', 'lebonskill'))
     echo "[Erreur] : connexion à la base échouée !";
   }
 
-$idconnected_user = 2;
+$idconnected_user = $_SESSION["id_u"];
 $idprofile = 1;
 
 //Préparation de la requete 1
@@ -66,22 +71,21 @@ $taille = $i;
 
     <body>
       <div id="top-bar">
-        <div id="top-bar_wl">
-          <img style="height: 70%; width: auto; margin: 5%;" src="img/logo.png"/>
-        </div>
-        <div id="top-bar_wc">
-          <h1>lebonskill.fr</h1>
-        </div>
-        <div id="top-bar_wr">
-          <input style="float: left; height: 30%; width: 70%;" type="text" placeholder="Recherche">
-          <img style="height: 30%; width: auto; float: left; margin: 1%;" src="img/search_img.png"/>
-        </div>
+          <div id="top-bar_wl">
+          <img src="img/logo.png"/>
+          </div>
+          <div id="top-bar_wc">
+              <h1>lebonskill.fr</h1>
+          </div>
+          <div id="top-bar_wr">
+              <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
+          </div>
       </div>
       <div id="left-menu">
         <a href="profile.php"><h2 class="menu_off">Mon profil</h2>
         <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
         <h2 class="menu_off">Messagerie</h2>
-        <h2 class="menu_off">Déconnexion</h2>
+        <h2><a href="proc_logout.php" class="menu_off">Déconnexion</a></h2>
       </div>
       <div id="main-content">
         <div id="profile-header">

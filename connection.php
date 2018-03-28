@@ -18,7 +18,7 @@ if (isset($_SESSION["id_u"])) {
         <img src="img/logo.png" />
         <h4>lebonskill.fr</h4>
         <br/>
-        <form id="form-cnx" method="post" action="authentication.php">
+        <form id="form-cnx" method="post" action="proc_authentication.php">
           <input type="text" name="mail" placeholder="Identifiant">
           <input type="password" name="mdp" placeholder="Mot de passe">
           <br/>

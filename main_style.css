@@ -19,9 +19,9 @@
     src: url('fonts/Comfortaa-Regular.ttf');
 }
 
-p, body {
+body {
   font-family: 'MADEEvolveSansMedium';
-  font-size: 12px;
+  font-size: 12px;!/
 }
 
 h1 {
@@ -47,67 +47,68 @@ a {
 
 /* main-page */
 #left-menu {
-  position: absolute;
-  top: 15%;
-  left: 0%;
-  width: 16%;
-  height: 76%;
-  padding: 2%;
-  text-align: right;
+    margin:150px 0 0 200px;
+    padding-right: 30px;
+    padding-top: 50px;
+    height: 400px;
+    width: 150px;
+    border-right: solid 2px #E83726;
+    line-height: 50px;
+    display: inline-block;
 }
 
 #main-content{
-  position: absolute;
-  width: 71%;
-  height: auto;
-  top: 15%;
-  left: 20%;
-  padding: 2%;
-  border-style: none;
-  border-width: 2px;
-  border-radius: 10px;
+  display: inline-block;
+  width: 800px;
+  margin-top: 150px;
+  margin-left: 70px;
+  vertical-align: top;
 }
 
 #top-bar{
   position: absolute;
   width: 100%;
-  height: 15%;
-  top: 0%;
-  left: 0%;
-  margin: 0%;
-  padding: 0%;
-  display: inline-block;
+
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
   background-color: #E83726;
 }
 
-#top-bar_wl {
-  position: relative;
-  height: 100%;
-  width: 25%;
-  float: left;
-  text-align: left;
+
+#top-bar_wl{
+    display: inline-block;
+    margin-left: 70px;
+}
+#top-bar_wl img{
+    width: 100px;
+    height: auto;
 }
 
 #top-bar_wc {
-  position: relative;
-  height: 100%;
-  width: 50%;
-  float: left;
-  text-align: center;
-  margin-top: 2%;
-  margin-bottom: 2%;
-  font-family: 'OpenSans-light';
-  font-size: 200%;
+    display: inline-block;
+    margin-left: 170px;
+    vertical-align: top;
+    font-family: 'Comfortaa-Regular';
+    font-size: 1.8em;
+    color: white;
+
 }
 
 #top-bar_wr {
-  position: relative;
-  height: 100%;
-  width: 25%;
-  float: left;
-  text-align: left;
-  margin-top: 2%;
-  margin-bottom: 2%;
+    display: inline-block;
+    margin-left: 100px;
+    vertical-align: bottom;
+    transform: translateY(-25%);
+
+}
+
+#top-bar_wr p {
+    font-family: 'Comfortaa-Regular';
+    font-size: 1.8em;
+    color: white;
+
 }
 
 /* connection page */

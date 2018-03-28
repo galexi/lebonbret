@@ -1,14 +1,15 @@
-form{
 
-}
-
-.wrap-input{
+.wrap-chat{
+    width: 600px;
+    margin-top: ;
 
 }
 
 #chatbox{
-  height: 350px;
-  overflow-y: scroll;
+    height: 350px;
+    overflow-y: scroll;
+    font-family: 'Comfortaa-Regular';
+    font-size: 1.2em;
 }
 
 #rdv{

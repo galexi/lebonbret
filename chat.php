@@ -9,6 +9,9 @@ else if($_GET['id'] == 2)
 {
     $current_user_firstname = "Emilie";
 }
+
+$ip = "192.168.43.79";
+
 $current_user_id = $_GET['id'];
 //$current_chat = $_GET['c'];
 
@@ -40,43 +43,43 @@ else
         <link rel="stylesheet" href="chat.css">
     </head>
     <body>
-      <div id="top-bar">
-        <div id="top-bar_wl">
-          <img style="height: 70%; width: auto; margin: 5%;" src="img/logo.png"/>
+        <div id="top-bar">
+            <div id="top-bar_wl">
+            <img src="img/logo.png"/>
+            </div>
+            <div id="top-bar_wc">
+                <h1>lebonskill.fr</h1>
+            </div>
+            <div id="top-bar_wr">
+                <p>Bienvenue <?php echo $current_user_firstname; ?> !</p>
+            </div>
         </div>
-        <div id="top-bar_wc">
-          <h1>lebonskill.fr</h1>
+
+        <div id="left-menu">
+            <h2 class="menu_off">Mon profil</h2>
+            <h2 class="menu_on"><a href="rendezvous.php">RDV à venir</a></h2>
+            <h2 class="menu_off">Messagerie</h2>
+            <h2 class="menu_off">Déconnexion</h2>
         </div>
-        <div id="top-bar_wr">
-          <input style="float: left; height: 30%; width: 70%;" type="text" placeholder="Recherche">
-          <img style="height: 30%; width: auto; float: left; margin: 1%;" src="img/search_img.png"/>
-        </div>
-      </div>
-      <div id="left-menu">
-        <h2 class="menu_off">Mon profil</h2>
-        <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
-        <h2 class="menu_off">Messagerie</h2>
-        <h2 class="menu_off">Déconnexion</h2>
-      </div>
-      <div id="main-content">
-          <!--Ecrire le contenu ici -->
-          <!-- -------------------------------------------- METADATA -->
+        <div id="main-content">
           <div id="user_id" style="display:none"><?php echo $current_user_id; ?></div>
           <div id="other_user_name" style="display:none"><?php echo $prenom_dest; ?></div>
           <div id="other_user_id" style="display:none"><?php echo $other_user_id; ?></div>
-          <div id="speaker" style="display:none"><?php echo $current_user_firstname; ?></div> <!-- Modifier avec du php en fonction de l'utilisateur connecté -->
-          <!-- -------------------------------------------- METADATA -->
-          <h2 style='margin-bottom:40px;'><center><?php echo $prenom_dest." ".$nom_dest; ?> <span id="en_ligne" style="color:green"></span></center></h2>
-          <!-- ################# CHAT ################## -->
-          <div id="chatbox">
-            <!--Se rempli automatiquement-->
+          <div id="speaker" style="display:none"><?php echo $current_user_firstname; ?></div>
+          <div id="ip" style="display:none"><?php echo $ip; ?></div>
+
+
+          <div class="wrap-chat">
+              <h2 style='margin-bottom:40px;'><center><?php echo $prenom_dest." ".$nom_dest; ?> <span id="en_ligne" style="color:green"></span></center></h2>
+              <div ><p id="chatbox"></p></div>
+              <form id="send-message" method="post">
+                  <div class="wrap-input">
+                      <input type="text" name="texte" id="texte" style="width:80%;" autocomplete="off" autofocus>
+                      <input type="submit" value="Envoyer" id="valid">
+                  </div>
+              </form>
           </div>
-          <form id="send-message" method="post">
-            <div class="wrap-input">
-                <input type="text" name="texte" id="texte" style="width:70%;" autocomplete="off" autofocus>
-                <input type="submit" value="OK" id="valid">
-            </div>
-          </form>
+        </div>
            <!--###################################
           <form id="rdv"  method="post">
               <h3>Prendre un rendez-vous</h3>
@@ -93,19 +96,20 @@ else
                   <li id="meteo-temperature">Température : </li>
               </ul>
 
-          </div>-->
-      </div>
+          </div>
+      </div>-->
 
     </body>
     <script type="text/javascript">
 
         var ws = null;
+        var ip = document.getElementById("ip")
 
         if ('MozWebSocket' in window) {
-          ws = new MozWebSocket("ws://192.168.1.70:1337");
+          ws = new MozWebSocket("ws://"+ip.innerHTML+":1337");
         }
         else if ('WebSocket' in window) {
-          ws = new WebSocket("ws://192.168.1.70:1337");
+          ws = new WebSocket("ws://"+ip.innerHTML+":1337");
         }
 
         if (typeof ws !=='undefined') {

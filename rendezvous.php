@@ -6,9 +6,10 @@
         <link rel="stylesheet" href="main_style.css" />
     </head>
     <?php
+      include 'data/vars.php';
       /* tentative d'accès à la BDD */
       try{
-        $bdd = new PDO('mysql:host=localhost;dbname=skills_detector;charset=utf8', 'root', '');
+        $bdd = new PDO('mysql:host='. DB_SERVER .';dbname='. DB_NAME .';charset=utf8', DB_USER, PW_USER);
       }
       catch (Exception $e)
       {

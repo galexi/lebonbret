@@ -1,4 +1,5 @@
 <?php
+include 'data/vars.php';
 /*VARIABLES*/
 if ($_GET['id'] == 1) {
   $current_user_firstname = "Patrice";
@@ -19,7 +20,7 @@ $current_user_id = $_GET['id'];
 $other_user_id = $_GET['o'];
 
 //récupération des données sur le destinataire
-if($bdd = mysqli_connect('127.0.0.1','root','samsam31','skills_detector'))
+if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
 {
     $req = mysqli_prepare($bdd,'SELECT nom, prenom FROM utilisateur WHERE id_u=?');
     mysqli_stmt_bind_param($req,'i',$other_user_id);

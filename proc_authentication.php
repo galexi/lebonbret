@@ -1,4 +1,5 @@
 <?php
+include 'data/vars.php';
 session_start();
 
 //recuperation des champs du formulaire
@@ -6,7 +7,7 @@ $identifiant=$_POST["mail"];
 $password=$_POST["mdp"];
 
 //Connexion à la base MySQL
-if($bdd = mysqli_connect('localhost', 'said', 'stri', 'lebonskill'))
+if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
   {
 
   }

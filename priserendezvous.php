@@ -1,4 +1,5 @@
 <?php
+include 'data/vars.php';
 session_start();
 
 //valeur fictives
@@ -10,7 +11,7 @@ $id_l="1";
 
 
 //Connexion à la base MySQL
-if($bdd = mysqli_connect('localhost', 'said', 'stri', 'skills_detector'))
+if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
   {
 
   }

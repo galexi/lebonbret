@@ -1,4 +1,5 @@
 <?php
+include 'data/vars.php';
 session_start();
   if (isset($_SESSION["id_u"]) ) {
     header('location: competences.php');
@@ -18,7 +19,7 @@ session_start();
     <?php
       /* tentative d'accès à la BDD */
       try{
-        $bdd = new PDO('mysql:host=localhost;dbname=skills_detector;charset=utf8', 'root', '');
+        $bdd = new PDO('mysql:host='.DB_SERVER.';dbname='. DB_NAME .';charset=utf8', DB_USER, PW_USER);
       }
       catch (Exception $e)
       {

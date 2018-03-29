@@ -15,13 +15,9 @@ session_start();
     </head>
     <?php
       /* tentative d'accès à la BDD */
-      try{
-        $bdd = new PDO('mysql:host='.DB_SERVER.';dbname='. DB_NAME .';charset=utf8', DB_USER, PW_USER);
-      }
-      catch (Exception $e)
-      {
-            die('Erreur : ' . $e->getMessage());
-      }
+      if(!$bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
+          echo "[Erreur] : connexion à la base échouée !";
+
     ?>
     <body>
       <div id="top-bar">
@@ -46,22 +42,31 @@ session_start();
         <div class="brick">
           <?php
             /* afficher les différentes catégorie possible : */
-            $reponse = $bdd->query('SELECT DISTINCT categorie FROM competence');
             echo '<div class="underbrick"><h2>Catégorie :</h2>';
             echo '<select id="categorie_select" name="categorie">';
             echo '<option selected value="lieu">Choisir une catégorie</option>';
-            while($donnees = $reponse->fetch()){
-              echo '<option value="'.  $donnees['categorie'] .'">'.$donnees['categorie'].'</option>';
+
+            $req = mysqli_prepare($bdd,'SELECT DISTINCT categorie FROM competence');
+            mysqli_stmt_execute($req);
+            mysqli_stmt_bind_result($req, $data['categorie']);
+            mysqli_stmt_fetch($req);
+
+            while(mysqli_stmt_fetch($req)){
+              echo '<option value="'.  $data['categorie'] .'">'.$data['categorie'].'</option>';
             }
             echo '</select></div>';
 
-            /* afficher les différentes lieux possible : */
-            $reponse = $bdd->query('SELECT DISTINCT nom FROM lieu');
+            // afficher les différentes lieux possible :
             echo '<div class="underbrick"><h2>Lieu :</h2>';
             echo '<select id="lieu_select" name="lieu">';
             echo '<option selected value="lieu">Choisir un lieu</option>';
-            while($donnees = $reponse->fetch()){
-              echo '<option value="'.  $donnees['nom'] .'">'.$donnees['nom'].'</option>';
+            $req = mysqli_prepare($bdd,'SELECT DISTINCT nom FROM lieu');
+            mysqli_stmt_execute($req);
+            mysqli_stmt_bind_result($req, $data['nom']);
+            mysqli_stmt_fetch($req);
+
+            while(mysqli_stmt_fetch($req)){
+              echo '<option value="'.  $data['nom'] .'">'.$data['nom'].'</option>';
             }
             echo '</select></div>';
 
@@ -77,23 +82,30 @@ session_start();
         </div>
 
         <?php
+          /* tentative d'accès à la BDD */
+          if(!$bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
+              echo "[Erreur] : connexion à la base échouée !";
           //fake id for current user
           $id_current = $_SESSION["id_u"];
 
           /* <!> Ajouter le lien sur le nom des utilisateurs */
           /* Ajouter bouton chat, passer en paramètre GET l'id de l'utilisateur courant et l'id sur la personne ciblée */
           /* supprimer les annonces de l'utilsateur courant */
-          $reponse = $bdd->query('SELECT *, u.nom as unom, l.nom as lnom FROM posseder p, utilisateur u, competence c, lieu l where p.id_u = u.id_u and p.id_c = c.id_c and u.id_l = l.id_l and u.id_u != '. $id_current);
 
-          while($donnees = $reponse->fetch()){
+          $req = mysqli_prepare($bdd,'SELECT photo, titre, categorie, prenom, u.nom as unom, l.nom as lnom, description, dist  FROM posseder p, utilisateur u, competence c, lieu l where p.id_u = u.id_u and p.id_c = c.id_c and u.id_l = l.id_l and u.id_u <> ?');
+          mysqli_stmt_bind_param($req, 'i', $id_current);
+          mysqli_stmt_execute($req);
+          mysqli_stmt_bind_result($req, $data['photo'], $data['titre'], $data['categorie'], $data['prenom'], $data['unom'], $data['lnom'], $data['description'], $data['dist']);
+
+          while(mysqli_stmt_fetch($req)){
             /* la classe brick désigne les éléments prenant toutes la largueur de l'élément parent. */
             echo '<div class="brick">';
-            echo '<img src="' . $donnees['photo'] . '"/>'; //affiche l'image
-            echo '<h1>' . $donnees['titre'] . '</h1>'; //le titre de la competence
-            echo '<h3>' . $donnees['categorie'] . '</h3><h3> ' . $donnees['lnom'] . '</h3>'; //le titre de la competence
-            echo '<h2>' . $donnees['prenom'] . ' ' . $donnees['unom'] . '</h2>'; //le prenom et le nom de l'utilisateur
-            echo '<p>' . $donnees['desc'] . '</p>'; //la description de la competence
-            echo '<h3 style="display: none">' . $donnees['dist'] . '</h3>';
+            echo '<img src="' . $data['photo'] . '"/>'; //affiche l'image
+            echo '<h1>' . $data['titre'] . '</h1>'; //le titre de la competence
+            echo '<h3>' . $data['categorie'] . '</h3><h3> ' . $data['lnom'] . '</h3>'; //le titre de la competence
+            echo '<h2>' . $data['prenom'] . ' ' . $data['unom'] . '</h2>'; //le prenom et le nom de l'utilisateur
+            echo '<p>' . $data['description'] . '</p>'; //la description de la competence
+            echo '<h3 style="display: none">' . $data['dist'] . '</h3>';
             echo '</div>';
           }
         ?>

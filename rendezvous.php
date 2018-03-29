@@ -10,13 +10,8 @@
       session_start();
 
       /* tentative d'accès à la BDD */
-      try{
-        $bdd = new PDO('mysql:host='. DB_SERVER .';dbname='. DB_NAME .';charset=utf8', DB_USER, PW_USER);
-      }
-      catch (Exception $e)
-      {
-            die('Erreur : ' . $e->getMessage());
-      }
+      if(!$bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
+          echo "[Erreur] : connexion à la base échouée !";
     ?>
     <body>
       <div id="top-bar">
@@ -43,9 +38,13 @@
           $id_current = $_SESSION["id_u"];
 
           //$reponse = $bdd->query('SELECT * FROM rdv r, utilisateur u, prendre p where p.id_u = u.id_u and p.id_r = r.id_r and p.id_u = ' . $id_current);
-          $reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
+          //$reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
 
-          while($donnees = $reponse->fetch()){
+          $req = mysqli_prepare($bdd,'SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
+          mysqli_stmt_execute($req);
+          mysqli_stmt_bind_result($req, $donnees['titre'], $donnees['horaire'], $donnees['nom'], $donnees['prenom'], $donnees['photo'], $donnees['id_l']);
+
+          while(mysqli_stmt_fetch($req)){
             /* la classe brick désigne les éléments prenant toutes la largueur de l'élément parent. */
             echo '<div class="tile">';
             echo '<h1>' . $donnees['titre'] . '</h1>'; //le titre de la competence

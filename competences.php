@@ -49,7 +49,6 @@ session_start();
             $req = mysqli_prepare($bdd,'SELECT DISTINCT categorie FROM competence');
             mysqli_stmt_execute($req);
             mysqli_stmt_bind_result($req, $data['categorie']);
-            mysqli_stmt_fetch($req);
 
             while(mysqli_stmt_fetch($req)){
               echo '<option value="'.  $data['categorie'] .'">'.$data['categorie'].'</option>';
@@ -63,7 +62,6 @@ session_start();
             $req = mysqli_prepare($bdd,'SELECT DISTINCT nom FROM lieu');
             mysqli_stmt_execute($req);
             mysqli_stmt_bind_result($req, $data['nom']);
-            mysqli_stmt_fetch($req);
 
             while(mysqli_stmt_fetch($req)){
               echo '<option value="'.  $data['nom'] .'">'.$data['nom'].'</option>';

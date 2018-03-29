@@ -15,7 +15,7 @@ if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
   }
 
 $idconnected_user = $_SESSION["id_u"];
-$idprofile = 1;
+$idprofile = $_GET["id"];
 
 //Préparation de la requete 1
 $req_prep = mysqli_prepare($bdd, 'SELECT nom, prenom, d_naiss, photo, bio FROM utilisateur WHERE id_u = ?');
@@ -28,34 +28,27 @@ mysqli_stmt_fetch($req_prep);
 $age = (time() - strtotime($profile['d_naiss'])) / 3600 / 24 /365;
 $user_age = strstr($age,'.', true);
 
+
+/* tentative d'accès à la BDD */
+if(!$bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
+    echo "[Erreur] : connexion à la base échouée !";
+
 //Préparation de la requete 2
-$req_prep2 = mysqli_prepare($bdd, 'SELECT C.titre, C.categorie, P.desc, P.dispo_jour, P.dispo_heure FROM competence AS C, posseder AS P, utilisateur AS U WHERE U.id_u = P.id_u AND C.id_c = P.id_c AND U.id_u = ?');
-if(mysqli_stmt_bind_param($req_prep2, "i", $idprofile) == FALSE) {
-  echo ("Erreur bind param : " . mysqli_error($bdd));
-}
-if(mysqli_stmt_execute($req_prep2) == FALSE) {
-  echo ("Erreur execute : " . mysqli_error($bdd));
-}
-if(mysqli_stmt_bind_result($req_prep2, $comp['titre'], $comp['categorie'], $comp['desc'], $comp['dispo_jour'], $comp['dispo_heure']) == FALSE){
-  echo ("Erreur bind result : " . mysqli_error($bdd));
-}
-if(mysqli_stmt_store_result($req_prep2) == FALSE) {
-  echo ("Erreur store result : " . mysqli_error($bdd));
-}
-//On compte le nombre de résultat retourné par la requete
-$nbresult = mysqli_stmt_num_rows($req_prep2);
+$req_prep = mysqli_prepare($bdd, 'SELECT titre, categorie, description, dispo_jour, dispo_heure FROM competence AS C, posseder AS P, utilisateur AS U WHERE U.id_u = P.id_u AND C.id_c = P.id_c AND U.id_u = ?');
+mysqli_stmt_bind_param($req_prep, "i", $idprofile);
+mysqli_stmt_execute($req_prep);
+mysqli_stmt_bind_result($req_prep, $comp['titre'], $comp['categorie'], $comp['description'], $comp['dispo_jour'], $comp['dispo_heure']);
 $i = 0;
 //Stockage des résultats dans un tableau
-while (mysqli_stmt_fetch($req_prep2)) {
+while (mysqli_stmt_fetch($req_prep)) {
   $titre[$i] = $comp['titre'];
   $categorie[$i] = $comp['categorie'];
-  $description[$i] = $comp['desc'];
+  $description[$i] = $comp['description'];
   $disp_d[$i] = $comp['dispo_jour'];
   $disp_t[$i] = $comp['dispo_heure'];
   $i++;
 }
 $taille = $i;
-
 ?>
 
 <!-- Debut HTML -->

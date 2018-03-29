@@ -33,6 +33,25 @@ else
 {
     $this->say("ERREUR BDD");
 }
+
+//Récupération des villes disponibles
+if($bdd = mysqli_connect(DB_SERVER,DB_USER,PW_USER,DB_NAME))
+{
+    $req = mysqli_prepare($bdd,'SELECT id_l, nom FROM lieu');
+    mysqli_stmt_execute($req);
+    mysqli_stmt_bind_result($req, $data['id_l'],$data['nom']);
+
+    $i=0;
+    while(mysqli_stmt_fetch($req)){
+        $id_l[$i] = $data['id_l'];
+        $nom[$i] = $data['nom'];
+        $i++;
+    }
+}
+else
+{
+    $this->say("ERREUR BDD");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,27 +93,40 @@ else
               <div ><p id="chatbox"></p></div>
               <form id="send-message" method="post">
                   <div class="wrap-input">
-                      <input type="text" name="texte" id="texte" style="width:80%;" autocomplete="off" autofocus>
+                      <input type="text" name="texte" id="texte" style="width:60%;" autocomplete="off" autofocus>
                       <input type="submit" value="Envoyer" id="valid">
+                      <input type="submit" value="Prendre Rendez-vous" id="btn-show">
+                      <input type="submit" value="Annuler" id="btn-annuler">
                   </div>
               </form>
           </div>
+          <div id="toHide">
+              <form id="rdv"  method="post">
+                  <h2>Prendre un rendez-vous</h2>
+                  <p><br>Veuillez saisir le lieu du rendez-vous ainsi que la date et l'heure afin de vérifier la météo !</p>
+                  Ville : <select id="ville" >
+                      <?php for ($i=0; $i < count($nom); $i++) {?>
+                      <option value=<?php echo $id_l[$i]; ?>><?php echo $nom[$i]; ?></option>
+                      <?php } ?>
+                  </select>
+                  Date : <input type="date" name="" value=""  id="date" >
+                  Heure : <input type="time" name="" value=""  id="heure" >
+                  <input type="submit" id="check-meteo" value="Vérifier la météo">
+              </form>
+              <div id="meteo" >
+                  <p>Météo du <span id="rdv-creneau"></span> : </p>
+                  <ul>
+                      <li>Temps : <span id="meteo-temps"></span></li>
+                      <li>Température : <span id="meteo-temperature"> </span></li>
+                      <li>Vent : force <span id="meteo-vent"></span></li>
+                  </ul>
+              </div>
+              <form id="form-valider-rdv">
+                  Donner un titre à la rencontre :  <input type="text" name="" value="" id="titre" >
+                  <input type="submit" id="valider-rdv" value="Valider le rendez-vous" >
+              </form>
+          </div>
 
-            <form id="rdv"  method="post">
-                <h3>Prendre un rendez-vous</h3>
-                Ville : <input type="text" name="" value="" id="ville" ><br>
-                Date : <input type="date" name="" value=""  id="date" >
-                Heure : <input type="time" name="" value=""  id="heure" >
-                <input type="submit" id="check-meteo" value="Vérifier la météo">
-            </form>
-            <div id="meteo" style="">
-                <p>Météo du <span id="rdv-creneau"></span> : </p>
-                <ul>
-                    <li>Temps : <span id="meteo-temps"></span></li>
-                    <li>Température : <span id="meteo-temperature"> </span></li>
-                    <li>Vent : force <span id="meteo-vent"></span></li>
-                </ul>
-            </div>
           </div>
         </div>
     </body>
@@ -102,6 +134,49 @@ else
 
         var ws = null;
         var ip = document.getElementById("ip")
+
+        document.getElementById('toHide').style.display = 'none';
+        document.getElementById('btn-annuler').style.display = 'none';
+        document.getElementById('valider-rdv').disabled = true;
+        document.getElementById('titre').disabled = true;
+
+        document.getElementById('btn-show').onclick = function(e){
+                document.getElementById('toHide').style.display = 'block';
+                document.getElementById('btn-annuler').style.display = 'inline-block';
+                document.getElementById('btn-show').style.display = 'none';
+                document.getElementById('rdv').scrollIntoView();
+            e.preventDefault();
+        };
+
+        document.getElementById('btn-annuler').onclick = function(e){
+            document.getElementById('toHide').style.display = 'none';
+            document.getElementById('btn-annuler').style.display = 'none';
+            document.getElementById('btn-show').style.display = 'inline-block';
+            e.preventDefault();
+        }
+
+
+        document.getElementById('titre').onkeyup = function(e){
+            if(this.value.length > 0){
+                document.getElementById('valider-rdv').disabled = false;
+            }else {
+                document.getElementById('valider-rdv').disabled = true;
+
+            }
+        }
+
+        document.getElementById('valider-rdv').onclick = function(e){
+            var id_u1=document.getElementById('user_id');
+            var id_u2=document.getElementById('other_user_id');
+            var date = document.getElementById('date');
+            var heure = document.getElementById('heure');
+            var date_heure =date.value + "_" + heure.value+":00";
+            var titre=document.getElementById('titre');
+            var id_l=document.getElementById('ville');
+            e.preventDefault();
+            document.location.href='priserendezvous.php?id_u1='+id_u1.innerHTML+"&id_u2="+id_u2.innerHTML+"&date_heure="+date_heure+"&titre="+titre.value+"&id_l="+id_l.options[id_l.selectedIndex].value;
+            //console.log('priserendezvous.php?id_u1='+id_u1.innerHTML+"&id_u2="+id_u2.innerHTML+"&date_heure=\'"+date_heure+"\'&titre=\'"+titre.value+"\'&id_l="+id_l.options[id_l.selectedIndex].value);
+        }
 
         if ('MozWebSocket' in window) {
           ws = new MozWebSocket("ws://"+ip.innerHTML+":1337");
@@ -130,9 +205,9 @@ else
                     case 'chat':
                         var to_print ="";
                         if (parsed_msg[2] == user_id.innerHTML) {
-                            log("<b>Vous : </b>" + parsed_msg[1]);
+                            log("<br><span style='float:right;'><b>Vous : </b><br><br><span id='bulle'>" + parsed_msg[1]+"</span></span><br><br><br>");
                         } else if(parsed_msg[2] == other_user_id.innerHTML) {
-                            log( "<b>"+ other_user_name.innerHTML+" : </b>" + parsed_msg[1]);
+                            log( "<b>"+ other_user_name.innerHTML+" : </b><br><br><span id='bulle'>" + parsed_msg[1]+"</span><br><br><br>");
                         } else {
 
                         }
@@ -161,6 +236,9 @@ else
                         meteo_temperature.innerHTML = temperature + " °C";
                         meteo_vent.innerHTML = vent;
 
+                        document.getElementById('titre').disabled = false;
+
+
                         break;
                   default:
 
@@ -179,14 +257,14 @@ else
             };
 
             document.getElementById('rdv').onsubmit = function(e) {
-                var ville = document.getElementById('ville');
+                var id_l = document.getElementById('ville');
                 //var ville = "Toulouse";
                 var date = document.getElementById('date');
                 //var date = "2018-03-31";
                 var heure = document.getElementById('heure');
                 //var heure = "15:00";
                 var user_id = document.getElementById('user_id');
-                var to_send = "meteo#!"+user_id.innerHTML+"#!" + ville.value + "#!" + date.value + "#!" + heure.value;
+                var to_send = "meteo#!"+user_id.innerHTML+"#!" + id_l.options[id_l.selectedIndex].innerHTML + "#!" + date.value + "#!" + heure.value;
                 //var to_send = "meteo#!"+user_id.innerHTML+"#!" + ville. + "#!" + date + "#!" + heure;
 
                 ws.send(to_send);

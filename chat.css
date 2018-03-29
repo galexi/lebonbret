@@ -1,6 +1,6 @@
 
 .wrap-chat{
-    width: 600px;
+    width: 500px;
     margin-top: ;
 
 }
@@ -15,4 +15,18 @@
 #rdv{
     margin-top: 30px;
     padding-bottom: 10px;
+}
+
+#bulle{
+    padding:10px;
+    border-radius: 10px;
+    background-color: #FF7036;
+
+}
+
+#toHide{
+    background-color: #EBEBEB;
+    width:600px;
+    padding:20px;
+    margin-top: 60px;
 }

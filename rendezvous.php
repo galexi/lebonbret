@@ -23,17 +23,17 @@ session_start();
             <a href="competences.php" ><img src="img/logo.png"/></a>
           </div>
           <div id="top-bar_wc">
-              <h1>lebonskill.fr</h1>
+              <h1><a href="competences.php">lebonskill.fr</a></h1>
           </div>
           <div id="top-bar_wr">
             <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
           </div>
       </div>
       <div id="left-menu">
-        <a href="profile.php"><h2 class="menu_off">Mon profil</h2></a>
-        <a href="rendezvous.php"><h2 class="menu_on">RDV à venir</h2></a>
-        <h2 class="menu_off">Messagerie</h2>
-        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
+          <h2 class="menu_off"><a href="profile.php">Mon profil</a></h2>
+          <h2 class="menu_on"><a href="rendezvous.php">RDV à venir</a></h2>
+          <h2 class="menu_off"><a href="messagerie.php">Messagerie</a></h2>
+          <h2 class="menu_off"><a href="proc_logout.php">Déconnexion</a></h2>
       </div>
       <div id="main-content">
         <?php

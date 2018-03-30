@@ -60,7 +60,7 @@ else
               <a href="competences.php" ><img src="img/logo.png"/></a>
             </div>
             <div id="top-bar_wc">
-                <h1>lebonskill.fr</h1>
+                <h1><a href="competences.php">lebonskill.fr</a></h1>
             </div>
             <div id="top-bar_wr">
                 <p>Bienvenue <?php echo $current_user_firstname; ?> !</p>

@@ -110,7 +110,7 @@ session_start();
             echo '<p>' . $data['desc'] . '</p>'; //la description de la competence
             echo '<h3 style="display: none">' . $data['dist'] . '</h3>';
             if ($id_current != $data['id']) {
-              echo '<button onclick="location.href = \'/chat.php?o=' . $data['id'] . '\';">Contacter</button>';//bouton permetant de contacter la personne designée
+              echo '<button onclick="location.href = \'chat.php?o=' . $data['id'] . '\';">Contacter</button>';//bouton permetant de contacter la personne designée
             }
             echo '</div>';
           }

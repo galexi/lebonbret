@@ -14,8 +14,13 @@ if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
     echo "[Erreur] : connexion à la base échouée !";
   }
 
-$idconnected_user = $_SESSION["id_u"];
-$idprofile = $_GET["id"];
+if(isset($_GET["id"])){
+    $idprofile = $_GET['id'];
+
+} else {
+    $idprofile = $_SESSION["id_u"];
+    $falg=1;
+}
 
 //Préparation de la requete 1
 $req_prep = mysqli_prepare($bdd, 'SELECT nom, prenom, d_naiss, photo, bio FROM utilisateur WHERE id_u = ?');
@@ -68,17 +73,17 @@ $taille = $i;
           <a href="competences.php" ><img src="img/logo.png"/></a>
           </div>
           <div id="top-bar_wc">
-              <h1>lebonskill.fr</h1>
+              <h1><a href="competences.php">lebonskill.fr</a></h1>
           </div>
           <div id="top-bar_wr">
               <p>Bienvenue <?php echo $_SESSION["prenom"]; ?> !</p>
           </div>
       </div>
       <div id="left-menu">
-        <a href="profile.php"><h2 class="menu_on">Mon profil</h2></a>
-        <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
-        <h2 class="menu_off">Messagerie</h2>
-        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
+        <h2 class="menu_on"><a href="profile.php">Mon profil</a></h2>
+        <h2 class="menu_off"><a href="rendezvous.php">RDV à venir</a></h2>
+        <h2 class="menu_off"><a href="messagerie.php">Messagerie</a></h2>
+        <h2 class="menu_off"><a href="proc_logout.php">Déconnexion</a></h2>
       </div>
       <div id="main-content">
         <div id="profile-header">
@@ -93,8 +98,8 @@ $taille = $i;
           </div>
           <div id="contacter">
             <?php
-            if ($idconnected_user != $idprofile) {
-              echo '<button onclick="location.href = \'/chat.php?id=' . $idconnected_user . '&o=' . $idprofile . '\';">Contacter</button>';
+            if (isset($_GET['id'])) {
+              echo '<button onclick="location.href = \'chat.php?&o=' . $idprofile . '\';">Contacter</button>';
             }
             ?>
           </div>

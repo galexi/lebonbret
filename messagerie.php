@@ -17,8 +17,8 @@ if($bdd = mysqli_connect(DB_SERVER, DB_USER, PW_USER, DB_NAME))
 $idconnected_user = $_SESSION["id_u"];
 
 //Préparation de la requete
-$req_prep = mysqli_prepare($bdd, 'SELECT P.id_u, U.nom, U.prenom FROM participer AS P, utilisateur AS U WHERE P.id_u = U.id_u AND P.id_u <> 1 AND id_conv IN (SELECT id_conv FROM participer WHERE id_u = ?)');
-mysqli_stmt_bind_param($req_prep, "i", $idconnected_user);
+$req_prep = mysqli_prepare($bdd, 'SELECT P.id_u, U.nom, U.prenom FROM participer AS P, utilisateur AS U WHERE P.id_u = U.id_u AND P.id_u <> ? AND id_conv IN (SELECT id_conv FROM participer WHERE id_u = ?)');
+mysqli_stmt_bind_param($req_prep, "ii", $idconnected_user, $idconnected_user);
 mysqli_stmt_execute($req_prep);
 mysqli_stmt_bind_result($req_prep, $data['id_u'], $data['nom'], $data['prenom']);
 mysqli_stmt_store_result($req_prep);
@@ -58,18 +58,18 @@ $taille = $i;
           </div>
       </div>
       <div id="left-menu">
-        <a href="profile.php"><h2 class="menu_on">Mon profil</h2></a>
-        <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
-        <a href="messagerie.php"><h2 class="menu_off">Messagerie</h2></a>
-        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
+        <h2 class="menu_off"><a href="profile.php">Mon profil</a></h2>
+        <h2 class="menu_off"><a href="rendezvous.php">RDV à venir</a></h2>
+        <h2 class="menu_on"><a href="messagerie.php">Messagerie</a></h2>
+        <h2 class="menu_off"><a href="proc_logout.php">Déconnexion</a></h2>
       </div>
       <div id="main-content">
         <?php
           for ($i=0; $i < $taille; $i++) {
             echo '<div class="brick">';
             echo "<h1> Conversation avec : " . $nom[$i] . " " . $prenom[$i] . "</h1></br>";
-            if ($idconnected_user != $id_u[$i]) {
-              echo '<button onclick="location.href = \'/chat.php?id=' . $idconnected_user . '&o=' . $id_u[$i] . '\';">Contacter</button>';
+            if($id_u[$i] != $idconnected_user){
+              echo '<button onclick="location.href = \'chat.php?o=' . $id_u[$i] . '\';">Contacter</button>';
             }
             echo '</div>';
           }

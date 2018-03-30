@@ -99,7 +99,7 @@ $taille = $i;
           <div id="contacter">
             <?php
             if (isset($_GET['id'])) {
-              echo '<button onclick="location.href = \'chat.php?&o=' . $idprofile . '\';">Contacter</button>';
+              echo '<button onclick="location.href = \'chat.php?o=' . $idprofile . '\';">Contacter</button>';
             }
             ?>
           </div>

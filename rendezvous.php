@@ -44,7 +44,7 @@ session_start();
           //$reponse = $bdd->query('SELECT * FROM rdv r, utilisateur u, prendre p where p.id_u = u.id_u and p.id_r = r.id_r and p.id_u = ' . $id_current);
           //$reponse = $bdd->query('SELECT r.titre, r.horaire, u.nom, u.prenom, u.photo, u.id_l FROM rdv r, prendre p, utilisateur u where r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != '. $id_current .' and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = '. $id_current .')');
 
-          $req = mysqli_prepare($bdd,'SELECT u.id_u,r.titre, r.horaire, u.nom, u.prenom, u.photo, l.nom FROM rdv r, prendre p, utilisateur u ,lieu l where l.id_l = u.id_l and r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != ? and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = ?)');
+          $req = mysqli_prepare($bdd,'SELECT u.id_u,r.titre, r.horaire, u.nom, u.prenom, u.photo, l.nom FROM rdv r, prendre p, utilisateur u ,lieu l where l.id_l = r.id_l and r.id_r = p.id_r and p.id_u = u.id_u and p.id_u != ? and p.id_r IN (SELECT p.id_r FROM prendre p WHERE p.id_u = ?)');
           mysqli_stmt_bind_param($req,"ii",$id_current,$id_current);
           mysqli_stmt_execute($req);
           mysqli_stmt_bind_result($req, $donnees['id_u'],$donnees['titre'], $donnees['horaire'], $donnees['nom'], $donnees['prenom'], $donnees['photo'], $donnees['lnom']);

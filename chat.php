@@ -9,9 +9,6 @@ session_start();
 
 $current_user_firstname = $_SESSION["prenom"];
 $current_user_id = $_SESSION['id_u'];
-//$current_chat = $_GET['c'];
-
-//$state = $_GET['s'];
 $other_user_id = $_GET['o'];
 
 //récupération des données sur le destinataire
@@ -60,7 +57,7 @@ else
     <body>
         <div id="top-bar">
             <div id="top-bar_wl">
-            <img src="img/logo.png"/>
+              <a href="competences.php" ><img src="img/logo.png"/></a>
             </div>
             <div id="top-bar_wc">
                 <h1>lebonskill.fr</h1>
@@ -71,10 +68,10 @@ else
         </div>
 
         <div id="left-menu">
-            <h2 class="menu_off"><a href="profile.php?id=<?php echo $_SESSION['id_u'] ?>">Mon profil</a></h2>
-            <h2 class="menu_on"><a href="rendezvous.php">RDV à venir</a></h2>
-            <h2 class="menu_off">Messagerie</h2>
-            <h2 class="menu_off">Déconnexion</h2>
+            <h2 class="menu_off"><a href="profile.php">Mon profil</a></h2>
+            <h2 class="menu_off"><a href="rendezvous.php">RDV à venir</a></h2>
+            <h2 class="menu_on"><a href="messagerie.php">Messagerie</a></h2>
+            <h2 class="menu_off"><a href="proc_logout.php">Déconnexion</a></h2>
         </div>
         <div id="main-content">
           <div id="user_id" style="display:none"><?php echo $current_user_id; ?></div>

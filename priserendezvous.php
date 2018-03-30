@@ -43,6 +43,6 @@ if(mysqli_stmt_execute($req_prep) == FALSE){
   echo "Error execute: " . mysqli_error($bdd);
 }
 
-header('location: chat.php?id='. $id_u1 .'&o='. $id_u2);
+header('location: chat.php?o='. $id_u2);
 echo "<br>END";
 ?>

@@ -2,17 +2,13 @@
 /*VARIABLES*/
 include 'data/vars.php';
 
-if ($_GET['id'] == 1) {
-  $current_user_firstname = "Patrice";
-} else if ($_GET['id'] == 3){
-  $current_user_firstname = "Géraldine";
-}
-else if($_GET['id'] == 2)
-{
-    $current_user_firstname = "Emilie";
-}
+session_start();
+  if (!isset($_SESSION["id_u"]) ) {
+    header('location: connection.php');
+  }
 
-$current_user_id = $_GET['id'];
+$current_user_firstname = $_SESSION["prenom"];
+$current_user_id = $_SESSION['id_u'];
 //$current_chat = $_GET['c'];
 
 //$state = $_GET['s'];
@@ -75,7 +71,7 @@ else
         </div>
 
         <div id="left-menu">
-            <h2 class="menu_off">Mon profil</h2>
+            <h2 class="menu_off"><a href="profile.php?id=<?php echo $_SESSION['id_u'] ?>">Mon profil</a></h2>
             <h2 class="menu_on"><a href="rendezvous.php">RDV à venir</a></h2>
             <h2 class="menu_off">Messagerie</h2>
             <h2 class="menu_off">Déconnexion</h2>
@@ -93,7 +89,7 @@ else
               <div ><p id="chatbox"></p></div>
               <form id="send-message" method="post">
                   <div class="wrap-input">
-                      <input type="text" name="texte" id="texte" style="width:60%;" autocomplete="off" autofocus>
+                      <input type="text" name="texte" id="texte" style="width:40%;" autocomplete="off" autofocus>
                       <input type="submit" value="Envoyer" id="valid">
                       <input type="submit" value="Prendre Rendez-vous" id="btn-show">
                       <input type="submit" value="Annuler" id="btn-annuler">

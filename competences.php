@@ -32,7 +32,7 @@ session_start();
           </div>
       </div>
       <div id="left-menu">
-        <a href="profile.php"><h2 class="menu_off">Mon profil</h2></a>
+        <a href="profile.php?id=<?php echo $_SESSION['id_u'] ?>"><h2 class="menu_off">Mon profil</h2></a>
         <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
         <h2 class="menu_off">Messagerie</h2>
         <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
@@ -49,6 +49,7 @@ session_start();
             $req = mysqli_prepare($bdd,'SELECT DISTINCT categorie FROM competence');
             mysqli_stmt_execute($req);
             mysqli_stmt_bind_result($req, $data['categorie']);
+            mysqli_stmt_fetch($req);
 
             while(mysqli_stmt_fetch($req)){
               echo '<option value="'.  $data['categorie'] .'">'.$data['categorie'].'</option>';
@@ -90,10 +91,17 @@ session_start();
           /* Ajouter bouton chat, passer en paramètre GET l'id de l'utilisateur courant et l'id sur la personne ciblée */
           /* supprimer les annonces de l'utilsateur courant */
 
-          $req = mysqli_prepare($bdd,'SELECT photo, titre, categorie, prenom, u.nom as unom, l.nom as lnom, description, dist  FROM posseder p, utilisateur u, competence c, lieu l where p.id_u = u.id_u and p.id_c = c.id_c and u.id_l = l.id_l and u.id_u <> ?');
-          mysqli_stmt_bind_param($req, 'i', $id_current);
-          mysqli_stmt_execute($req);
-          mysqli_stmt_bind_result($req, $data['photo'], $data['titre'], $data['categorie'], $data['prenom'], $data['unom'], $data['lnom'], $data['description'], $data['dist']);
+          $req = mysqli_prepare($bdd,'SELECT photo, titre, categorie, prenom, u.nom as unom, l.nom as lnom, `desc`, dist  FROM posseder p, utilisateur u, competence c, lieu l where p.id_u = u.id_u and p.id_c = c.id_c and u.id_l = l.id_l and u.id_u <> ?');
+          if(mysqli_stmt_bind_param($req, 'i', $id_current) == FALSE){
+              echo("Error bind param ".mysqli_error($bdd));
+          }
+          if(mysqli_stmt_execute($req) == FALSE){
+              echo("Error bind param ".mysqli_error($bdd));
+          }
+          if(mysqli_stmt_bind_result($req, $data['photo'], $data['titre'], $data['categorie'], $data['prenom'], $data['unom'], $data['lnom'], $data['desc'], $data['dist']) == FALSE){
+              echo("Error bind param ".mysqli_error($bdd));
+
+          }
 
           while(mysqli_stmt_fetch($req)){
             /* la classe brick désigne les éléments prenant toutes la largueur de l'élément parent. */
@@ -102,7 +110,7 @@ session_start();
             echo '<h1>' . $data['titre'] . '</h1>'; //le titre de la competence
             echo '<h3>' . $data['categorie'] . '</h3><h3> ' . $data['lnom'] . '</h3>'; //le titre de la competence
             echo '<h2>' . $data['prenom'] . ' ' . $data['unom'] . '</h2>'; //le prenom et le nom de l'utilisateur
-            echo '<p>' . $data['description'] . '</p>'; //la description de la competence
+            echo '<p>' . $data['desc'] . '</p>'; //la description de la competence
             echo '<h3 style="display: none">' . $data['dist'] . '</h3>';
             echo '</div>';
           }

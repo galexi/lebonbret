@@ -5,7 +5,7 @@ session_start();
     header('location: competences.php');
   }
   else {
-    header('location: connection.php')
+    header('location: connection.php');
   }
 
 ?>

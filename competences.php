@@ -32,16 +32,16 @@ session_start();
           </div>
       </div>
       <div id="left-menu">
-        <a href="profile.php?id=<?php echo $_SESSION['id_u'] ?>"><h2 class="menu_off">Mon profil</h2></a>
-        <a href="rendezvous.php"><h2 class="menu_off">RDV à venir</h2></a>
-        <h2 class="menu_off">Messagerie</h2>
-        <a href="proc_logout.php"><h2 class="menu_off">Déconnexion</h2></a>
+        <h2 class="menu_off"><a href="profile.php">Mon profil</a></h2>
+        <h2 class="menu_off"><a href="rendezvous.php">RDV à venir</a></h2>
+        <h2 class="menu_off"><a href="messagerie.php">Messagerie</a></h2>
+        <h2 class="menu_off"><a href="proc_logout.php">Déconnexion</a></h2>
       </div>
       <div id="main-content">
         <!-- barre de filtres -->
         <div class="brick">
           <?php
-            /* afficher les différentes catégorie possible : */
+            /* afficher les différentes catégories possibles : */
             echo '<div class="underbrick"><h2>Catégorie :</h2>';
             echo '<select id="categorie_select" name="categorie">';
             echo '<option selected value="lieu">Choisir une catégorie</option>';
@@ -56,7 +56,7 @@ session_start();
             }
             echo '</select></div>';
 
-            // afficher les différentes lieux possible :
+            // afficher les différents lieux possibles :
             echo '<div class="underbrick"><h2>Lieu :</h2>';
             echo '<select id="lieu_select" name="lieu">';
             echo '<option selected value="lieu">Choisir un lieu</option>';
@@ -87,18 +87,15 @@ session_start();
           //fake id for current user
           $id_current = $_SESSION["id_u"];
 
-          /* <!> Ajouter le lien sur le nom des utilisateurs */
-          /* Ajouter bouton chat, passer en paramètre GET l'id de l'utilisateur courant et l'id sur la personne ciblée */
-          /* supprimer les annonces de l'utilsateur courant */
 
-          $req = mysqli_prepare($bdd,'SELECT photo, titre, categorie, prenom, u.nom as unom, l.nom as lnom, `desc`, dist  FROM posseder p, utilisateur u, competence c, lieu l where p.id_u = u.id_u and p.id_c = c.id_c and u.id_l = l.id_l and u.id_u <> ?');
+          $req = mysqli_prepare($bdd,'SELECT u.id_u, photo, titre, categorie, prenom, u.nom AS unom, l.nom AS lnom, `desc`, dist  FROM posseder p, utilisateur u, competence c, lieu l WHERE p.id_u = u.id_u AND p.id_c = c.id_c AND u.id_l = l.id_l AND u.id_u <> ?');
           if(mysqli_stmt_bind_param($req, 'i', $id_current) == FALSE){
               echo("Error bind param ".mysqli_error($bdd));
           }
           if(mysqli_stmt_execute($req) == FALSE){
               echo("Error bind param ".mysqli_error($bdd));
           }
-          if(mysqli_stmt_bind_result($req, $data['photo'], $data['titre'], $data['categorie'], $data['prenom'], $data['unom'], $data['lnom'], $data['desc'], $data['dist']) == FALSE){
+          if(mysqli_stmt_bind_result($req, $data['id'], $data['photo'], $data['titre'], $data['categorie'], $data['prenom'], $data['unom'], $data['lnom'], $data['desc'], $data['dist']) == FALSE){
               echo("Error bind param ".mysqli_error($bdd));
 
           }
@@ -109,9 +106,12 @@ session_start();
             echo '<img src="' . $data['photo'] . '"/>'; //affiche l'image
             echo '<h1>' . $data['titre'] . '</h1>'; //le titre de la competence
             echo '<h3>' . $data['categorie'] . '</h3><h3> ' . $data['lnom'] . '</h3>'; //le titre de la competence
-            echo '<h2>' . $data['prenom'] . ' ' . $data['unom'] . '</h2>'; //le prenom et le nom de l'utilisateur
+            echo '<h2><a href="profile.php?id=' . $data['id'] . '">' . $data['prenom'] . ' ' . $data['unom'] . '</a></h2>'; //le prenom et le nom de l'utilisateur
             echo '<p>' . $data['desc'] . '</p>'; //la description de la competence
             echo '<h3 style="display: none">' . $data['dist'] . '</h3>';
+            if ($id_current != $data['id']) {
+              echo '<button onclick="location.href = \'/chat.php?o=' . $data['id'] . '\';">Contacter</button>';//bouton permetant de contacter la personne designée
+            }
             echo '</div>';
           }
         ?>
